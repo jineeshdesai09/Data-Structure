@@ -51,18 +51,6 @@ void deleteFromFirst() {
 
 // Delete from end
 void deleteFromEnd() {
-    if (first == NULL) {
-        printf("Linked List is Empty\n");
-        return;
-    }
-
-    if (first->link == NULL) {
-        printf("Deleted Node is: %d\n", first->info);
-        free(first);
-        first = NULL;
-        return;
-    }
-
     struct node *pred = first;
     struct node *save = first->link;
 
@@ -87,32 +75,19 @@ void deleteFromPosition() {
     printf("Enter position to delete: ");
     scanf("%d", &pos);
 
-    if (pos <= 0) {
-        printf("Invalid position!\n");
-        return;
-    }
-
-    if (pos == 1) {
-        deleteFromFirst();
-        return;
-    }
-
     struct node *pred = first;
-    while (i < pos - 1 && pred->link != NULL) {
-        pred = pred->link;
+    struct node *save = pred ->link;
+
+    while (i< pos-1 && pred ->link != NULL)
+    {
+        pred = pred ->link;
         i++;
     }
-
-    if (pred->link == NULL) {
-        printf("Position out of range!\n");
-        return;
-    }
-
-    struct node *save = pred->link;
-    printf("Deleted Node is: %d\n", save->info);
-    pred->link = save->link;
+    pred->link =save->link;
     free(save);
-}
+    
+
+    }
 
 // Count total nodes
 void countNodes() {
