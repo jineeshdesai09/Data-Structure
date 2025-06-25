@@ -8,34 +8,38 @@ struct node
     struct node *link;
 };
 
-//insertAtFirst
-struct node *insertAtFirst(struct node *first, int val){
+// insertAtFirst
+struct node *insertAtFirst(struct node *first, int val)
+{
     struct node *newNode = (struct node *)malloc(sizeof(struct node));
 
-    newNode ->info = val;
-    newNode ->link = first;
+    newNode->info = val;
+    newNode->link = first;
     first = newNode;
     return first;
 }
 
-void display(struct node *first){
+void display(struct node *first)
+{
     if (first == NULL)
     {
         printf("List is Empty");
         return;
     }
-    else{
+    else
+    {
         struct node *save = first;
         while (save != NULL)
         {
-            printf("%d ->", save ->info);
-            save = save ->link;
+            printf("%d ->", save->info);
+            save = save->link;
         }
         printf(" NULL \n");
     }
 }
 
-struct node *copyList(struct node *first){
+struct node *copyList(struct node *first)
+{
     if (first == NULL)
     {
         return NULL;
@@ -43,36 +47,38 @@ struct node *copyList(struct node *first){
     struct node *begin = NULL;
     struct node *pred;
     struct node *newNode = (struct node *)malloc(sizeof(struct node));
-
-    if (newNode == NULL)
+    struct node *avail = (struct node *)malloc(sizeof(struct node));
+    // copy first Node
+    if (avail == NULL)
     {
         printf("Underflow");
         return NULL;
     }
-    newNode ->info = first ->info;
-    newNode ->link = NULL;
+    newNode = avail;
+    avail = avail->link;
+    newNode->info = first->info;
+    newNode->link = NULL;
     begin = newNode;
 
     struct node *save = first;
 
-    while (save ->link != NULL)
+    while (save->link != NULL)
     {
-        pred =newNode;
-        save =save->link;
-
-        struct node *avail = (struct node *)malloc(sizeof(struct node));
+        pred = newNode;
+        save = save->link;
 
         if (avail == NULL)
         {
             printf("underflow");
             return NULL;
         }
-        newNode =avail;
-        newNode ->info = save->info;
-        newNode ->link = NULL;
+        newNode = avail;
+        avail = avail->link;
+        newNode->info = save->info;
 
         pred->link = newNode;
-        
+
+        newNode->link = NULL;
     }
     return begin;
 }
@@ -81,7 +87,7 @@ int main()
 {
     struct node *first = NULL;
     int val;
-    int opr=0;
+    int opr = 0;
 
     do
     {
@@ -102,5 +108,4 @@ int main()
     display(copiedList);
 
     return 0;
-    
 }
