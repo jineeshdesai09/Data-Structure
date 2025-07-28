@@ -1,49 +1,67 @@
-#include <stdio.h>
-#include <string.h>
+#include<stdio.h>
+#include<string.h>
+#define size 50
 
-#define MAX 1000
+char Stack[size];
+int top = -1;
 
-int isVowel(char ch) {
-    return (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u');
-}
-
-void reversePrefix(char str[], int index) {
-    int start = 0;
-    int end = index - 1;
-    char temp;
-
-    while (start < end) {
-        temp = str[start];
-        str[start] = str[end];
-        str[end] = temp;
-        start++;
-        end--;
+void push(char ch){
+    if (top >= size-1)
+    {
+        return;
     }
+    Stack[++top] = ch;
+    
 }
 
-int main() {
-    int T, j=1;
-    printf("Enter number of test cases: ");
-    scanf("%d", &T);
+char pop(){
+    if (top == -1)
+    {
+        return '\0';
+    }
+    return Stack[top--];
+}
 
-    while (j<=T) {
-        int N;
-        char S[MAX];
+int isVowel(char ch){
+    return(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u');
+}
 
-        printf("Enter length of string: ");
-        scanf("%d", &N);
-        printf("Enter the string: ");
-        scanf("%s", S);
+void reverse(char str[], int index){
+    top = -1;
 
-        for (int i = 0; i < N; i++) {
-            if (isVowel(S[i])) {
-                reversePrefix(S, i);
+    for (int i = 0; i <index; i++)
+    {
+        push(str[i]);
+    }
+
+    for (int i = 0; i <index; i++)
+    {
+        str[i] = pop();
+    }
+    
+}
+
+int main(){
+    int t;
+
+    printf("Enter the test cases: ");
+    scanf("%d", &t);
+
+    for (int test = 1; test <= t; test++) {
+        char str[size];
+
+        printf("Case %d: Enter the string: ", test);
+        scanf("%s", str);
+
+        int n = strlen(str);
+
+        for (int i = 0; i < n; i++) {
+            if (isVowel(str[i])) {
+                reverse(str, i);
             }
         }
 
-        printf("Final String: %s\n", S);
-        j++;
+        printf("Final String: %s\n", str);
     }
-
     return 0;
 }
