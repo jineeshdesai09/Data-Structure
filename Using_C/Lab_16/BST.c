@@ -52,54 +52,89 @@ int search(struct treenode *root, int val)
     return 1;
 }
 
+struct treenode *minValue(struct treenode *root)
+{
+    struct treenode *curr = root;
+    while (curr && curr->lptr != NULL)
+    {
+        curr = curr->lptr;
+    }
+    return curr;
+}
+
 struct treenode *delete(struct treenode *root, int val)
 {
     if (root == NULL)
-    { // check the null
+    {
         return root;
     }
-    // find the node with given value
     if (root->info > val)
     {
         root->lptr = delete(root->lptr, val);
     }
-
     else if (root->info < val)
     {
         root->rptr = delete(root->rptr, val);
     }
-    // if any of side is null, we can return otherside
-    else if (root->lptr == NULL)
-    {
-        struct treenode *save = root->rptr;
-        free(root);
-        return save;
-    }
-
-    else if (root->rptr == NULL)
-    {
-        struct treenode *save = root->lptr;
-        free(root);
-        return save;
-    }
-    // Combine sides and return top element of it
     else
     {
-        // go rptrmost of lptr side
-        struct treenode *temp = root->lptr;
-        struct treenode *rightmost = temp;
-        while (rightmost->rptr != NULL)
-            rightmost = rightmost->rptr;
-
-        // join rptr side to lptr's rptrmost
-        rightmost->rptr = root->rptr;
-        free(root);
-
-        return temp;
+        if (root->lptr == NULL)
+        {
+            struct treenode *save = root->rptr;
+            free(root);
+            return save;
+        }
+        else if (root->rptr == NULL)
+        {
+            struct treenode *save = root->lptr;
+            free(root);
+            return save;
+        }
+        struct treenode *temp = minValue(root->rptr);
+        root->info = temp->info;
+        root->rptr = delete(root->rptr, temp->info);
     }
-
     return root;
 }
+// struct treenode *delete(struct treenode *root, int val)
+// {
+//     if(root == NULL)
+//         return root;
+
+//     if (root->info > val)
+//     {
+//         root->lptr = delete(root->lptr,val);
+//     }
+//     else if (root->info < val)
+//     {
+//         root->rptr = delete(root->rptr,val);
+//     }
+//     else if (root->lptr == NULL)
+//     {
+//         struct treenode *save = root->rptr;
+//         free(root);
+//         return save;
+//     }
+//     else if(root->rptr == NULL)
+//     {
+//         struct treenode *save = root->lptr;
+//         free(root);
+//         return save;
+//     }
+//     else{
+//         struct treenode *temp = root->lptr;
+//         struct treenode *rightmost = temp;
+
+//         while (rightmost->rptr != NULL)
+//         {
+//             rightmost = rightmost->rptr;
+//         }
+//         rightmost->rptr = root->rptr;
+//         free(root);
+//         return temp;
+//     }
+//     return root;
+// }
 
 void postOrder(struct treenode *root)
 {
